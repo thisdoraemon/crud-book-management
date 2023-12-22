@@ -1,6 +1,7 @@
 package main
 
 import (
+	"book-management/helper"
 	"book-management/service"
 	"fmt"
 	"os"
@@ -9,6 +10,12 @@ import (
 func main() {
 	fmt.Println("=====================================================")
 	fmt.Println("==============Welcome to Book Management=============")
+
+	dataSaver := &helper.CSVDataSaver{}
+	dataLoader := &helper.CSVDataLoader{}
+
+	bookService := service.NewBookService("data.csv", dataLoader, dataSaver)
+
 	for {
 		fmt.Println("Please choose an action:")
 		fmt.Println("1. View All Books")
@@ -23,22 +30,22 @@ func main() {
 
 		switch choice {
 		case 1:
-			err := service.ViewAllBooks()
+			err := bookService.ViewAllBooks()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
 		case 2:
-			err := service.AddNewBook()
+			err := bookService.AddNewBook()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
 		case 3:
-			err := service.UpdateBook()
+			err := bookService.UpdateBook()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
 		case 4:
-			err := service.DeleteBook()
+			err := bookService.DeleteBook()
 			if err != nil {
 				fmt.Println("Error:", err)
 			}
