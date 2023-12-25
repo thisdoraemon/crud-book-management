@@ -30,7 +30,6 @@ func (saver *CSVDataSaver) SaveDataToCSV(fileName string, books []models.Book) e
 
 type CSVDataLoader struct{}
 
-// LoadDataFromCSV loads data from a CSV file
 func (loader *CSVDataLoader) LoadDataFromCSV(fileName string) error {
 	file, err := os.Open(fileName)
 	if err != nil {
@@ -78,11 +77,4 @@ func CreateFile(fileName string) {
 			return
 		}
 	}(file)
-}
-
-func GetInput(prompt string) string {
-	fmt.Print(prompt + " : ")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	return scanner.Text()
 }

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"book-management/helper"
 	"book-management/interfaces"
 	"book-management/models"
 	"bufio"
@@ -30,13 +29,28 @@ func NewBookService(fileName string, dataLoader interfaces.DataLoader, dataSaver
 func (s *BookService) AddNewBook() error {
 	var newBook models.Book
 
-	fmt.Println("Enter book details")
+	fmt.Print("Enter book details\n")
+	scanner := bufio.NewScanner(os.Stdin)
 
-	newBook.Id, _ = strconv.Atoi(helper.GetInput("Book ID"))
-	newBook.Title = helper.GetInput("Book Title")
-	newBook.Author = helper.GetInput("Book Author")
-	newBook.ReleaseYear = helper.GetInput("Release Year")
-	newBook.Pages, _ = strconv.Atoi(helper.GetInput("Pages"))
+	fmt.Println("Book Id : ")
+	scanner.Scan()
+	newBook.Id, _ = strconv.Atoi(scanner.Text())
+
+	fmt.Print("Book Title : ")
+	scanner.Scan()
+	newBook.Title = scanner.Text()
+
+	fmt.Print("Book Author : ")
+	scanner.Scan()
+	newBook.Author = scanner.Text()
+
+	fmt.Print("Book Release Year : ")
+	scanner.Scan()
+	newBook.ReleaseYear = scanner.Text()
+
+	fmt.Print("Book Pages : ")
+	scanner.Scan()
+	newBook.Pages, _ = strconv.Atoi(scanner.Text())
 
 	_, err := s.FindBookById(newBook.Id)
 	if err != nil {
