@@ -4,12 +4,13 @@ import (
 	"book-management/helper"
 	"book-management/service"
 	"fmt"
+	"log"
 	"os"
 )
 
 func main() {
-	fmt.Println("=====================================================")
-	fmt.Println("==============Welcome to Book Management=============")
+	fmt.Println("======================================================")
+	fmt.Println("==============Welcome to Book Management==============")
 
 	dataSaver := &helper.CSVDataSaver{}
 	dataLoader := &helper.CSVDataLoader{}
@@ -26,7 +27,11 @@ func main() {
 		fmt.Print("Enter your choice (1-5): ")
 
 		var choice int
-		fmt.Scan(&choice)
+		_, err := fmt.Scan(&choice)
+		if err != nil {
+			log.Println("Error scanning user choice:", err)
+			continue
+		}
 
 		switch choice {
 		case 1:

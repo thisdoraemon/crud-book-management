@@ -32,7 +32,9 @@ func (s *BookService) AddNewBook() error {
 	fmt.Print("Enter book details\n")
 	scanner := bufio.NewScanner(os.Stdin)
 
-	fmt.Println("Book Id : ")
+	scanner.Scan()
+
+	fmt.Print("Book Id : ")
 	scanner.Scan()
 	newBook.Id, _ = strconv.Atoi(scanner.Text())
 

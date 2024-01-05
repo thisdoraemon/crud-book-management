@@ -5,6 +5,7 @@ import (
 	"book-management/service"
 	"bufio"
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -17,13 +18,21 @@ func (saver *CSVDataSaver) SaveDataToCSV(fileName string, books []models.Book) e
 	if err != nil {
 		return fmt.Errorf("error opening csv file: %w", err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Println("failed to close the file:", err)
+		}
+	}(file)
 
 	for _, book := range books {
 		row := strconv.Itoa(book.Id) + "," + book.Title + "," + book.Author +
 			"," + book.ReleaseYear + "," + strconv.Itoa(book.Pages) + "\n"
 
-		file.WriteString(row)
+		_, err := file.WriteString(row)
+		if err != nil {
+			return fmt.Errorf("failed to write to CSV file: %w", err)
+		}
 	}
 	return nil
 }
@@ -35,7 +44,12 @@ func (loader *CSVDataLoader) LoadDataFromCSV(fileName string) error {
 	if err != nil {
 		return fmt.Errorf("error opening csv file: %w", err)
 	}
-	defer file.Close()
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Println("failed to close the file:", err)
+		}
+	}(file)
 
 	scanner := bufio.NewScanner(file)
 
@@ -68,7 +82,7 @@ func CreateFile(fileName string) {
 		fmt.Println(err)
 		return
 	} else {
-		fmt.Println("File", fileName, "berhasil dibuat")
+		fmt.Println("File", fileName, "created successfully")
 	}
 	defer func(file *os.File) {
 		err := file.Close()
